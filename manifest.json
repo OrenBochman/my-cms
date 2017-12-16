@@ -1,0 +1,6 @@
+{
+  "name": "my-cms",
+  "short_name": "my-cms",
+  "start_url": "/",
+  "display": "standalone"
+}
