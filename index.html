@@ -20,10 +20,10 @@
       Simpla.init({
 
         // The Github repo you want Simpla to use
-        repo: 'username/repo',
+        repo: 'OrenBochman/my-cms',
 
         // Netlify auth adapter, initialize with your Netlify site name
-        auth: new SimplaNetlify({ site: 'mysite' }),
+        auth: new SimplaNetlify({ site: 'orenbochman' }),
 
         // Public content source (optional)
         // Defaults to fetching directly from Github
@@ -38,5 +38,12 @@
   </head>
   <body>
     <my-cms-app></my-cms-app>
+
+    <!-- Block of editable richtext -->
+    <simpla-text path="/text"></simpla-text>
+
+    <!-- An editable image -->
+    <img is="simpla-img" path="/section/img">
+
   </body>
 </html>
