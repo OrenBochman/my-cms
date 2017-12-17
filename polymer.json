@@ -1,7 +1,11 @@
 {
+  
   "lint": {
     "rules": [
-      "polymer-2"
+      "polymer-1"
     ]
-  }
+  },
+  "builds": [{
+  "preset": "es5-bundled"}]
+
 }

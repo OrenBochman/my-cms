@@ -2,18 +2,18 @@
   "name": "my-cms",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0",
+    "polymer": "^1.7.0",
     "simpla-text": "^1.2.2",
     "simpla-img": "^1.3.2",
     "simpla-paths": "^1.0.2",
-    "simpla-admin": "^1.3.1"
+    "simpla-admin": "^1.3.1",
+    "simpla-collection": "^1.0.0",
+    "simpla-link": "^1.0.0",
+    "simpla-styles": "^1.0.0",
+    "simple-button": "^0.2.3",
+    "simple-callout": "^0.4.2"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
-  },
-  "resolutions": {
-    "polymer": "^2.0.0",
-    "webcomponentsjs": "^v1.0.19"
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
   }
 }

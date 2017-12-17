@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import"  href="https://polygit.org/polymer+^1.9.1/webcomponentsjs+^0.7.0/components/polymer/polymer.html">
 
 <dom-module id="my-cms-app">
   <template>
@@ -7,7 +7,6 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
   </template>
 
   <script>
@@ -15,18 +14,13 @@
      * @customElement
      * @polymer
      */
-    class MyCmsApp extends Polymer.Element {
-      static get is() { return 'my-cms-app'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'my-cms-app'
-          }
-        };
+     Polymer({
+      is: "my-cms-app",
+  
+      // add a callback to the element's prototype
+      ready: function() {
+        this.textContent = "I'm a proto-element. Check out my prototype!"
       }
-    }
-
-    window.customElements.define(MyCmsApp.is, MyCmsApp);
+    });
   </script>
 </dom-module>
