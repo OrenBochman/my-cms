@@ -28,21 +28,25 @@
         // Public content source (optional)
         // Defaults to fetching directly from Github
         //source: 'https://mysite.netlify.com'
-        source: window.location.origin
-
+        source: 'window.location.origin'
       });
+
+      // Prompt for login from auth adapter
+      Simpla.login(); 
     </script>
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
+    <link rel="import" href="/bower_components/simpla-img/simpla-img.html" async>
+    <link rel="import" href="/bower_components/simpla-paths/simpla-paths.html" async>
+    <link rel="import" href="/bower_components/simpla-admin/simpla-admin.html" async>   
+    <link rel="import" href="/bower_components/simpla-text/simpla-text.html" async>
     <link rel="import" href="/src/my-cms-app/my-cms-app.html">
-  </head>
+
+
+</head>
   <body>
     <my-cms-app></my-cms-app>
-
-    <!-- Block of editable richtext -->
     <simpla-text path="/text"></simpla-text>
-
-    <!-- An editable image -->
     <img is="simpla-img" path="/section/img">
 
   </body>
