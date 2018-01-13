@@ -1,4 +1,4 @@
-import Simpla from 'simpla';
+//import Simpla from 'simpla';
 
 window.Simpla = Simpla;
 
