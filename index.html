@@ -17,6 +17,10 @@
 
     <!-- Init Simpla -->
     <script>
+      import Simpla from 'simpla';
+
+      window.Simpla = Simpla;
+
       Simpla.init({
 
         // The Github repo you want Simpla to use
@@ -28,8 +32,12 @@
         // Public content source (optional)
         // Defaults to fetching directly from Github
         //source: 'https://orenbochman.netlify.com'
-        source: 'https://oren.bochman.org'
+        source: 'https://oren.bochman.org',
         //source: 'window.location.origin'
+        branch: 'master',
+        public: 'dist'
+
+
       });
 
       // Prompt for login from auth adapter
