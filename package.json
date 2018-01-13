@@ -1,0 +1,5 @@
+{
+    "devDependencies": {
+        "gulp-polymer-build-utils": "^1.5.0"
+    }
+}
