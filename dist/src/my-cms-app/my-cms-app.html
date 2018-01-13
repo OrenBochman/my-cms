@@ -1,0 +1,26 @@
+<link rel="import" href="https://polygit.org/polymer+^1.9.1/webcomponentsjs+^0.7.0/components/polymer/polymer.html">
+
+<dom-module id="my-cms-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+     Polymer({
+      is: "my-cms-app",
+  
+      // add a callback to the element's prototype
+      ready: function() {
+        this.textContent = "I'm a proto-element. Check out my prototype!"
+      }
+    });
+  </script>
+</dom-module>
