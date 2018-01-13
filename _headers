@@ -1,0 +1,4 @@
+
+## Allow access from other domains
+/*
+    Access-Control-Allow-Origin: *
