@@ -1,0 +1,435 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../simpla-styles/simpla-styles.html">
+<link rel="import" href="../iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../simple-drawer/simple-drawer.html">
+<link rel="import" href="../polymer-sortablejs/polymer-sortablejs.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<!-- Material icons cherry picked from iron-icons -->
+<iron-iconset-svg name="simpla-collection">
+  <svg>
+    <defs>
+      <g id="mode-edit"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></g>
+      <g id="add"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></g>
+      <g id="check"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></g>
+      <g id="drag-handle"><path d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/></g>
+      <g id="remove"><path d="M19 13H5v-2h14v2z"/></g>
+    </defs>
+  </svg>
+</iron-iconset-svg>
+
+<dom-module id="simpla-collection-editor">
+  <template>
+    <style>
+      :host, *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      :host {
+        --iron-icon-width: 1em;
+        --iron-icon-height: 1em;
+        display: block;
+        position: relative;
+        position: sticky;
+        top: 2.6em;
+        width: 100%;
+        z-index: var(--simpla-on-top);
+        font-size: var(--simpla-scale-0);
+        font-family: var(--simpla-font-family);
+        -moz-osx-font-smoothing: grayscale;
+         -webkit-font-smoothing: antialiased;
+                 font-smoothing: antialiased;
+      }
+
+      /**
+       * Inline edit button
+       */
+      .edit {
+        @apply --simpla-button;
+        display: flex;
+        position: absolute;
+        align-items: center;
+        top: 0;
+        color: white;
+        background: var(--simpla-grey-700);
+        font-size: var(--simpla-scale-000);
+        transform: translateY(-115%);
+      }
+
+      .edit::before {
+        @apply --simpla-button-highlight;
+      }
+
+      .edit:active::before {
+        @apply --simpla-button-highlight-active;
+      }
+
+      .edit__icon {
+        margin-right: 0.5em;
+      }
+
+      /**
+       * Empty content placeholder
+       */
+      .placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        min-height: 100px;
+        background: var(--simpla-grey-100);
+        cursor: pointer;
+      }
+
+      .placeholder__label {
+        @apply --simpla-button;
+        align-items: center;
+        border-radius: 999px;
+        padding-left: 1.25em;
+        padding-right: 1.25em;
+        background: var(--simpla-grey-300);
+        color: var(--simpla-grey-700);
+      }
+
+      .placeholder__label__icon {
+        --iron-icon-width: 1.1em;
+        --iron-icon-height: 1.1em;
+        margin-bottom: 0 0.1em 0.05em 0;
+      }
+
+      /**
+       * Editor controls
+       */
+      .editor__close {
+        position: absolute;
+        display: flex;
+        top: 0.5em;
+        right: 0;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(40%);
+        background: white;
+        color: var(--simpla-grey-500);
+        width: var(--simpla-scale-3);
+        height: var(--simpla-scale-3);
+        border-radius: 50%;
+        box-shadow: var(--simpla-elevation-1);
+        cursor: pointer;
+      }
+
+      .editor__close:hover {
+        color: var(--simpla-grey-700);
+      }
+
+      .editor__close__icon {
+        --iron-icon-width: var(--simpla-scale-0);
+        --iron-icon-height: var(--simpla-scale-0);
+      }
+
+      .editor__scroller {
+        padding: 1.25em 2em;
+        overflow-y: scroll;
+        max-height: 100%;
+      }
+
+      .editor__list {
+        display: block;
+        width: 14em;
+      }
+
+      .editor__add {
+        @apply --simpla-button;
+        width: 100%;
+        padding: 0.9em;
+      }
+
+      /**
+       * Item previews
+       */
+      .item {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 7.75em;
+        margin: 1em auto;
+        background: var(--simpla-grey-300);
+        color: var(--simpla-grey-500);
+        border-radius: var(--simpla-border-radius);
+        cursor: pointer;
+        cursor: grab;
+      }
+
+      .item:active {
+        cursor: grabbing;
+      }
+
+      .item__label {
+        color: var(--simpla-grey-700);
+        font-size: var(--simpla-scale-0);
+        font-weight: 600;
+      }
+
+      .item__id {
+        font-size: var(--simpla-scale-00);
+        margin-top: 0.3em;
+        margin-bottom: -0.6em;
+      }
+
+      .item__remove,
+      .item__drag {
+        display: none;
+      }
+
+      .item:hover .item__remove,
+      .item:hover .item__drag {
+        display: flex;
+      }
+
+      .item__remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+        align-items: center;
+        justify-content: center;
+        transform: translate(30%, -30%);
+        background: var(--simpla-grey-700);
+        color: white;
+        width: var(--simpla-scale-1);
+        height: var(--simpla-scale-1);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .item__remove:hover {
+        background: red;
+      }
+
+      .item__remove__icon {
+        --iron-icon-width: var(--simpla-scale-00);
+        --iron-icon-height: var(--simpla-scale-00);
+      }
+
+      .item__drag {
+        position: absolute;
+        top: 0.5em;
+        left: 0.5em;
+      }
+
+      /* Path hidden prop in Chrome and IE */
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <!-- Inline edit UI -->
+    <button
+      class="edit"
+      on-tap="_open"
+      hidden$="[[_hideEdit(items.*, active)]]"
+    >
+      <iron-icon
+        class="edit__icon"
+        icon="simpla-collection:mode-edit">
+      </iron-icon>
+      [[_pluralize(as)]]
+    </button>
+
+    <div
+      class="placeholder"
+      on-tap="_addItem"
+      hidden$="[[!_showPlaceholder(items.*)]]"
+    >
+      <div class="placeholder__label">
+        <iron-icon
+          class="placeholder__label__icon"
+          icon="simpla-collection:add">
+        </iron-icon>
+        add [[as]]
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <simple-drawer
+      class="editor"
+      active="{{active}}"
+      no-child-clicks
+    >
+      <a class="editor__close" on-tap="_close">
+        <iron-icon
+          class="editor__close__icon"
+          icon="simpla-collection:check">
+        </iron-icon>
+      </a>
+
+      <div class="editor__scroller">
+        <sortable-js class="editor__list">
+          <template is="dom-repeat" items="{{items}}">
+            <div class="item">
+              <iron-icon
+                class="item__drag"
+                icon="simpla-collection:drag-handle">
+              </iron-icon>
+
+              <a class="item__remove"
+                on-tap="_removeItem"
+              >
+                <iron-icon
+                  class="item__remove__icon"
+                  icon="simpla-collection:remove">
+                </iron-icon>
+              </a>
+
+              <span class="item__label">
+                [[_capitalize(as)]] [[_addOne(index)]]
+              </span>
+
+              <span class="item__id">
+                [[item.id]]
+              </span>
+            </div>
+
+          </template>
+        </sortable-js>
+
+        <button class="editor__add" on-tap="_addItem">
+          add [[as]]
+        </button>
+      </div>
+    </simple-drawer>
+
+  </template>
+  <script>
+    import plur from 'plur';
+
+    function generateId() {
+      return Math.random().toString(36).substr(-5);
+    }
+
+    Polymer({
+      is: 'simpla-collection-editor',
+
+      properties: {
+
+        /**
+         * Collection path, handed down from mediator
+         * @type {String}
+         */
+        path: String,
+
+        /**
+         * Items array to edit
+         * @type {Array}
+         */
+        items: {
+          type: Array,
+          notify: true
+        },
+
+        /**
+         * Item name, passed down from simpla-collection
+         * @type {String}
+         */
+        as: String,
+
+        /**
+         * Whether editor is currently open
+         * @type {Boolean}
+         */
+        active: {
+          type: Boolean,
+          notify: true
+        }
+
+      },
+
+      /**
+       * Remove an item from the collection, and all related Simpla data
+       * @param  {Event} e Click event from item to remove
+       * @return {undefined}
+       */
+      _removeItem(e) {
+        let { index } = e.model,
+            id = this.items[index].id;
+
+        Simpla.remove(`${this.path}/${id}`);
+        this.splice('items', index, 1);
+      },
+
+      /**
+       * Add a new item to the collection
+       * @return {undefined}
+       */
+      _addItem() {
+        this.push('items', { id: generateId() });
+      },
+
+      /**
+       * Utility method to open editor
+       * @return {undefined}
+       */
+      _open() {
+        this.active = true;
+      },
+
+      /**
+       * Utility method to close editor
+       * @return {undefined}
+       */
+      _close() {
+        this.active = false;
+      },
+
+      /**
+       * Whether to show the empty content placeholder
+       * @param  {Array} items Items in the collection
+       * @return {undefined}
+       */
+      _showPlaceholder(items) {
+        let empty = items.value.length === 0;
+
+        return empty;
+      },
+
+      /**
+       * Checks whether inline edit button should be hidden
+       * @param  {Array} items    Observable version of items array
+       * @param  {Boolean} active Whether editor is open
+       * @return {Boolean}        Whether to hide edit button
+       */
+      _hideEdit(items, active) {
+        return items.value.length === 0 || active;
+      },
+
+      /**
+       * Capitalize the first letter of a string
+       * @param  {String} string String to capitalize
+       * @return {String}        Capitalized string
+       */
+      _capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      },
+
+      /**
+       * Pluralize a string
+       * @param  {String} string String to pluralize
+       * @return {String}        Pluralized string
+       */
+      _pluralize(string) {
+        return plur(string, 2);
+      },
+
+      /**
+       * Add one to a number
+       * @param {Number} number Number to add one to
+       * @return {Number}       Number with one added
+       */
+      _addOne(number) {
+        return number + 1;
+      }
+    });
+  </script>
+</dom-module>

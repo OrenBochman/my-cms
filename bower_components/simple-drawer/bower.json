@@ -1,0 +1,36 @@
+{
+  "name": "simple-drawer",
+  "version": "0.3.12",
+  "authors": [
+    "Simpla <friends@simpla.io>"
+  ],
+  "description": "Simple off-screen drawer panel",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "simple-drawer"
+  ],
+  "main": "simple-drawer.html",
+  "license": "MIT",
+  "homepage": "https://webcomponents.org/element/SimpleElements/simple-drawer",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "ignore": [
+    "*",
+    "!src",
+    "!*.html",
+    "!LICENSE"
+  ],
+  "dependencies": {
+    "polymer": "^1.8.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "^5.0.0",
+    "iron-demo-helpers": "^1.2.6"
+  },
+  "resolutions": {
+    "polymer": "^1.8.0"
+  }
+}

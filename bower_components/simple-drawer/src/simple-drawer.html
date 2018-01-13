@@ -1,0 +1,284 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="simple-drawer">
+  <template>
+    <style>
+      :host, *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      :host {
+        position: fixed;
+        display: block;
+        top: 0;
+        bottom: 0;
+        background: white;
+        outline: none;
+        z-index: 2147483647;
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 18px 0 rgba(0, 0, 0, 0.12),
+                    0 3px 5px -1px rgba(0, 0, 0, 0.4);
+        -moz-osx-font-smoothing: grayscale;
+         -webkit-font-smoothing: antialiased;
+                 font-smoothing: antialiased;
+        transition: transform 125ms cubic-bezier(0.4, 0.0, 1, 1);
+        /* Protect against body lock */
+        pointer-events: auto;
+      }
+
+      :host([hidden]) {
+        display: none;
+      }
+
+      :host([visible]) {
+        transform: translateZ(0) translateX(0) !important;
+        transition: transform 250ms cubic-bezier(0.0, 0.0, 0.2, 1);
+      }
+
+      :host([position="left"]) {
+        left: 0;
+        transform: translateZ(0) translateX(-100%);
+      }
+
+      :host([position="right"]) {
+        right: 0;
+        transform: translateZ(0) translateX(100%);
+      }
+
+      :host([disabled]) {
+        display: block;
+        position: relative;
+        box-shadow: none;
+        height: 100%;
+        transform: none !important;
+        z-index: 0;
+      }
+    </style>
+
+    <content></content>
+
+  </template>
+
+  <script>
+    class SimpleDrawer {
+      beforeRegister() {
+        this.is = 'simple-drawer',
+
+        this.properties = {
+
+          /**
+           *  State of the drawer
+           *  @type {Boolean}
+           */
+          active: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+
+          /**
+           *  Wether drawer is visisble
+           *  Used by CSS transitions
+           *  @type {Boolean}
+           */
+          visible: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+
+           /**
+           *  Wether drawer is hidden
+           *  Used by CSS transitions
+           *  @type {Boolean}
+           */
+          hidden: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: true
+          },
+
+          /**
+           * Stop drawer closing on escape keypress
+           * @type {Boolean}
+           */
+          noEscape: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Stop drawer closing when it loses focus
+           * @type {Boolean}
+           */
+          noBlur: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           * Stop the drawer closing when children get focus
+           * @type {Boolean}
+           */
+          noChildClicks: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+           *  Position of the drawer
+           *  @type {String} left|right
+           */
+          position: {
+            type: String,
+            value: 'left',
+            reflectToAttribute: true
+          },
+
+          /**
+           * Disable the drawer (so it acts like a div)
+           * @type {Boolean}
+           */
+          disabled: {
+            type: Boolean,
+            reflectToAttribute: true,
+            notify: true
+          },
+
+          /**
+           * Make the drawer focuseable
+           * @type {Number}
+           */
+          tabindex: {
+            type: Number,
+            reflectToAttribute: true,
+            readonly: true,
+            value: 0
+          }
+
+        };
+
+        this.observers = [
+          '_toggleVisibility(active)',
+          '_closeOnEscape(active)',
+          '_focusOnActive(active)',
+          '_lockBodyWhenOpen(active)',
+          '_resetActive(disabled)'
+        ];
+
+        this.listeners = {
+          blur: '_closeOnBlur',
+          transitionend: '_hideIfInactive'
+        }
+      }
+
+
+      /**
+       * Toggles visibility of drawer based on active state
+       * @param  {Boolean} active Value of the active property
+       * @return {undefined}
+       */
+      _toggleVisibility(active) {
+        if (active) {
+          this.hidden = false;
+          Polymer.RenderStatus
+            .afterNextRender(this, () => this.visible = true);
+        } else {
+          this.visible = false;
+        }
+      }
+
+      /**
+       * Ensure drawer is active when disabled
+       * @param  {Boolean} disabled Value of the disabled prop
+       * @return {undefined}
+       */
+      _resetActive(disabled) {
+        this.active = disabled;
+      }
+
+      /**
+       * Sets active false if visisble false after
+       * Called on transition ends
+       * @param  {Event} e Transitionend event
+       * @return {undefined}
+       */
+      _hideIfInactive(e) {
+        if (!this.active) {
+          this.hidden = true;
+        }
+      }
+
+      /**
+       * Autofocus the drawer when it opens
+       * @param  {Boolean} active Value of the active prop
+       * @return {undefined}
+       */
+      _focusOnActive(active) {
+        if (active) {
+          this.focus();
+        }
+      }
+
+      /**
+       * Close the drawer when it loses focus
+       * @param  {Event} e Blur event
+       * @return {undefined}
+       */
+      _closeOnBlur(e) {
+        let { noBlur, disabled, visible, noChildClicks } = this,
+            fromChild = e.relatedTarget && this.contains(e.relatedTarget);
+
+        if (noBlur || disabled) {
+          return
+        }
+
+        if (!visible || noChildClicks && fromChild) {
+          this.focus();
+        } else {
+          this.active = false;
+        }
+      }
+
+      /**
+       * Close the drawer on escape keypress if active
+       * @param  {Boolean} active Value of the active property
+       * @return {undefined}
+       */
+      _closeOnEscape(active) {
+        let closeIfEscape = (e) => {
+          if (e.keyCode === 27 && !this.noEscape) {
+            this.active = false;
+          }
+        };
+
+        if (this.disabled) {
+          return;
+        }
+
+        if (active) {
+          document.addEventListener('keydown', closeIfEscape);
+        } else {
+          document.removeEventListener('keydown', closeIfEscape);
+        }
+      }
+
+      /**
+       * Lock the document body when drawer is open
+       * @param  {Boolean} active Value of the active property
+       * @return {undefined}
+       */
+      _lockBodyWhenOpen(active) {
+        const bodyStyles = {
+          overflow: 'hidden',
+          pointerEvents: 'none'
+        };
+
+        Object.keys(bodyStyles).forEach(style => {
+          document.body.style[style] = active && !this.disabled ? bodyStyles[style] : '';
+        });
+      }
+    };
+    Polymer(SimpleDrawer)
+  </script>
+</dom-module>

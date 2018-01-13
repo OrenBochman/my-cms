@@ -1,0 +1,29 @@
+{
+  "name": "simpla-paths",
+  "version": "1.0.2",
+  "description": "Construct paths for Simpla Elements",
+  "authors": [
+    "Simpla <friends@simpla.io>"
+  ],
+  "keywords": [
+    "web-components",
+    "custom attributes",
+    "simpla",
+    "paths",
+    "content management",
+    "cms"
+  ],
+  "main": "simpla-paths.js",
+  "license": "MIT",
+  "homepage": "https://github.com/SimplaElements/simpla-paths/",
+  "ignore": [
+    "*",
+    "!src",
+    "!simpla-paths.html",
+    "!simpla-paths.min.js",
+    "!LICENSE"
+  ],
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5"
+  }
+}
