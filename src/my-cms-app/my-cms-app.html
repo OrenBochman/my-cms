@@ -1,4 +1,5 @@
     <link rel="import"  href="https://polygit.org/polymer+^1.9.1/webcomponentsjs+^0.7.0/components/polymer/polymer.html">
+
     <!-- Import Simpla elements --> 
     <link rel="import" href="/bower_components/simpla-text/simpla-text.html">
     <link rel="import" href="/bower_components/simpla-img/simpla-img.html">
@@ -12,20 +13,23 @@
         display: block;
       }
     </style>
-  </template>
+     <simpla-text path="/text"></simpla-text>
 
+     <!-- An editable image -->
+     <img is="simpla-img" path="/section/img">   
+
+
+  </template>
   <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-     Polymer({
-      is: "my-cms-app",
-  
-      // add a callback to the element's prototype
-      ready: function() {
-        this.textContent = "I'm a proto-element. Check out my prototype!"
+    class MyCMSApp extends Polymer.Element {
+      static get is() { return "my-cms-app" }
+      
+      // set this element's owner property
+      constructor() {
+        super();
       }
-    });
+    }
+    
+    customElements.define(MyCMSApp.is, MyCMSApp);
   </script>
 </dom-module>
