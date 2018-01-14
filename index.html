@@ -9,14 +9,14 @@
 
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="/manifest.json">
-
+    
     <!-- Include Simpla, Netlify auth adapter, and cross-browser polyfill-->
     <script src="https://unpkg.com/simpla@^3.0.0" ></script>
     <script src="https://unpkg.com/simpla@^3.0.0/adapters/netlify.js" ></script>
     <!--<script src="/node_modules/simpla/adapters/netlify.js"></script>-->
 
     <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js" ></script>
-
+    <link rel="import" href="./src/my-cms-app/my-cms-app.html" />
     <script>
 
     Simpla.init({
@@ -34,30 +34,15 @@
     //source: 'window.location.origin'
     branch: 'master',
     public: 'dist'
-
-
 });
 
 // Prompt for login from auth adapter
 Simpla.login(); 
   </script>
 
-
-    <!-- Import Simpla elements --> 
-    <link rel="import" href="/bower_components/simpla-text/simpla-text.html">
-    <link rel="import" href="/bower_components/simpla-img/simpla-img.html">
-    <link rel="import" href="/bower_components/simpla-paths/simpla-paths.html">
-    <link rel="import" href="/bower_components/simpla-admin/simpla-admin.html">
-    
-
-
 </head>
   <body>
-    <!-- <my-cms-app></my-cms-app> -->
-    
-    <simpla-text path="/text"></simpla-text>
+    <my-cms-app></my-cms-app>
 
-    <!-- An editable image -->
-    <img is="simpla-img" path="/section/img">   
   </body>  
 </html>
