@@ -11,9 +11,11 @@
     "simpla-link": "^1.0.0",
     "simpla-styles": "^1.0.0",
     "simple-button": "^0.2.3",
-    "simple-callout": "^0.4.2"
+    "simple-callout": "^0.4.2",
+    "simpla-video": "^1.2.1",
+    "simpla-article": "^1.1.1"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
+    "web-component-tester": "Polymer/web-component-tester#^6.4.0"
   }
 }

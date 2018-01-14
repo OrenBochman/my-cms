@@ -5,6 +5,9 @@
     "dependencies": {
         "del": "^3.0.0",
         "gulp": "^3.9.1",
-        "run-sequence": "^2.2.1"
+        "polymer-build": "^2.1.1",
+        "polymer-cli": "^1.5.7",
+        "run-sequence": "^2.2.1",
+        "yargs": "^10.1.1"
     }
 }
