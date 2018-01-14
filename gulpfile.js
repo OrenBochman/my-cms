@@ -1,3 +1,5 @@
+//c.f. https://medium.com/collaborne-engineering/building-polymer-app-with-gulp-dee266d348df
+
 const del = require('del');
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
@@ -17,7 +19,6 @@ gulp.task('dist:prepare', ['dist:clean'], () => {
 });
 
 gulp.task('dist:clean', () => del('dist'));
-//gulp.task('dist:clean', () => del(''));
 
 gulp.task('dist:test', function() {
   return polymerBuildUtils.runWct(argv);
