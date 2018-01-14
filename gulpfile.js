@@ -16,8 +16,8 @@ gulp.task('dist:prepare', ['dist:clean'], () => {
     .pipe(gulp.dest('dist'));
 });
 
-//gulp.task('dist:clean', () => del('dist'));
-gulp.task('dist:clean', () => del(''));
+gulp.task('dist:clean', () => del('dist'));
+//gulp.task('dist:clean', () => del(''));
 
 gulp.task('dist:test', function() {
   return polymerBuildUtils.runWct(argv);
