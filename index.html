@@ -23,7 +23,9 @@
 
     <!-- <link rel="import" href="./src/my-cms-app/my-cms-app.html" /> -->
     <link rel="import" href="bower_components/simpla-text/simpla-text.html"/>
+    <link rel="import" href="bower_components/simpla-article/simpla-article.html"/>
     <link rel="import" href="bower_components/simpla-img/simpla-img.html"/>
+    <link rel="import" href="bower_components/simpla-collection/simpla-collection.html"/>
     <link rel="import" href="bower_components/simpla-admin/simpla-admin.html"/>
 
     <script>
@@ -56,6 +58,51 @@ Simpla.login();
     <!-- An editable image -->
     <img is="simpla-img" path="/section/img"/>
 
+    <simpla-collection path="/gallery" as="photo">
+
+      <!-- Item template -->
+      <template>
+        <img is="simpla-img" path="/gallery/[photo]/img">
+        <simpla-text path="/gallery/[photo]/caption"></simpla-text>
+      </template>
+
+      <simpla-article id="post"></simpla-article>
+
+      <script>
+        // Get post slug from URL
+        var post = document.querySelector('#post'),
+            path = window.location.pathname,
+            slug = path.split('blog/').pop();
+
+        // Set post path to fetch/create post
+        post.path = '/posts/' + slug;
+      </script>
+
+      <!-- Localization namespace, using simpla-paths -->
+      <div id="localize" sid="en">
+        <simpla-text sid="content"></simpla-text>
+      </div>
+
+      <script>
+        var localize = document.querySelector('#localize');
+
+        // Set locale to browser language
+        localize.setAttribute('sid', navigator.languge);
+      </script>
+
+
+      <simpla-text id="content"></simpla-text>
+
+      <script>
+        var content = document.querySelector('#content'),
+            isMobile = window.innerWidth < 600,
+            path = isMobile ? '/content#mobile' : '/content';
+
+        // Serve different content on mobile
+        content.path = path;
+      </script>
+    
+    </simpla-collection>
 
   </body>  
 </html>
