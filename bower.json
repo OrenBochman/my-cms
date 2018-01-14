@@ -1,22 +1,41 @@
 {
   "name": "my-cms",
+  "description": "Website and documentation for my projects",
+  "version": "0.0.0",
+  "authors": [
+    "Oren Bochman <https://github.com/OrenBochman>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OrenBochman/my-cms.git"
+  },
+  
+  "bugs": {
+  "url": "https://github.com/orenbochman/my-cms/issues"
+  },
   "main": "index.html",
   "dependencies": {
-    "polymer": "^1.9.1",
-    "simpla-text": "^1.2.2",
-    "simpla-img": "^1.3.2",
-    "simpla-paths": "^1.0.2",
-    "simpla-admin": "^1.3.1",
+    "polymer": "^1.7.0",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
+    "simpla-admin": "^1.0.0",
     "simpla-collection": "^1.0.0",
+    "simpla-img": "^1.0.0",
     "simpla-link": "^1.0.0",
+    "simpla-paths": "^1.0.1",
+    "simpla-text": "^1.0.0",
     "simpla-styles": "^1.0.0",
     "simple-button": "^0.2.3",
     "simple-callout": "^0.4.2",
-    "simpla-video": "^1.2.1",
-    "simpla-article": "^1.1.1",
-    "simpla-notify": "^1.0.1"
+    "simple-dropdown": "SimpleElements/simple-dropdown#^0.4.0",
+    "paper-tooltip": "^1.1.3",
+    "iron-media-query": "PolymerElements/iron-media-query#^2.0.0",
+    "iron-pages": "PolymerElements/iron-pages#^2.0.0",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0"
   },
-  "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^6.4.0"
+  "resolutions": {
+    "simple-dropdown": "^0.4.0",
+    "webcomponentsjs": "^0.7.24",
+    "paper-toggle-button": "^1.0.0"
   }
 }
