@@ -13,7 +13,8 @@
     "simple-button": "^0.2.3",
     "simple-callout": "^0.4.2",
     "simpla-video": "^1.2.1",
-    "simpla-article": "^1.1.1"
+    "simpla-article": "^1.1.1",
+    "simpla-notify": "^1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.4.0"
