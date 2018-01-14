@@ -9,7 +9,8 @@ const argv = polymerBuildUtils.addYargs(yargs).help().argv;
 
 
 gulp.task('default', cb => {
-  return runSequence('dist:prepare', 'inline-references', cb);
+  //return runSequence('dist:prepare', 'inline-references', cb);
+  return runSequence('dist:prepare', cb);
 });
 
 gulp.task('dist:prepare', ['dist:clean'], () => {
