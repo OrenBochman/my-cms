@@ -1,0 +1,46 @@
+{
+  "name": "simpla-link",
+  "version": "1.2.0",
+  "authors": [
+    "Simpla <friends@simpla.io>"
+  ],
+  "description": "Wrap any element in an editable link",
+  "keywords": [
+    "simpla",
+    "web-components",
+    "custom-element",
+    "editable",
+    "content-management",
+    "link"
+  ],
+  "main": "simpla-link.html",
+  "license": "MIT",
+  "homepage": "https://github.com/SimplaElements/simpla-link/",
+  "pages": {
+    "API Reference": "API.md"
+  },
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "ignore": [
+    "*",
+    "!src",
+    "!*.html",
+    "!LICENSE"
+  ],
+  "dependencies": {
+    "polymer": "^1.8.0",
+    "simpla-styles": "^1.0.0",
+    "simpla-element-behavior": "^0.2.3"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.5",
+    "web-component-tester": "^5.0.1",
+    "simpla-text": "^1.0.3",
+    "simpla-img": "^1.0.1",
+    "simpla-demo-helper": "^0.1.2"
+  },
+  "resolutions": {
+    "polymer": "^1.8.0"
+  }
+}
