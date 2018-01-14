@@ -1,0 +1,9 @@
+{
+  "type": "Text",
+  "path": "/text",
+  "data": {
+    "text": "<p>hello simpla</p>"
+  },
+  "createdAt": "2017-04-05T17:20:17.440Z",
+  "updatedAt": "2018-01-13T16:45:27.097Z"
+}
